@@ -1,0 +1,194 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum Category {
+  ARRAY
+  STRING
+  LINKED_LIST
+  TREE
+  GRAPH
+  DYNAMIC_PROGRAMMING
+  BACKTRACKING
+  GREEDY
+  MATH
+  BIT_MANIPULATION
+  STACK
+  QUEUE
+  HEAP
+  HASH_TABLE
+  SORTING
+  SEARCHING
+  TWO_POINTERS
+  SLIDING_WINDOW
+}
+
+enum Language {
+  PYTHON
+  JAVASCRIPT
+  JAVA
+  CPP
+  GO
+}
+
+enum SubmissionStatus {
+  PENDING
+  PROCESSING
+  ACCEPTED
+  WRONG_ANSWER
+  TIME_LIMIT_EXCEEDED
+  COMPILATION_ERROR
+  RUNTIME_ERROR
+}
+
+enum EventType {
+  CODE_CHANGE
+  LANGUAGE_CHANGE
+  SUBMIT
+  AI_QUERY
+  FOCUS_CHANGE
+  PASTE
+}
+
+model Problem {
+  id          String     @id @default(cuid())
+  title       String
+  slug        String     @unique
+  description String
+  difficulty  Difficulty
+  category    Category
+  tags        String[]
+
+  // Starter code for each language
+  starterCode Json // { python: "...", javascript: "...", etc. }
+
+  // Function signature hints
+  functionName String
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  testCases   TestCase[]
+  sessions    Session[]
+
+  @@index([difficulty])
+  @@index([category])
+}
+
+model TestCase {
+  id         String  @id @default(cuid())
+  problemId  String
+  problem    Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  input      String  // JSON string of inputs
+  output     String  // Expected output
+  isPublic   Boolean @default(false) // Public test cases shown to users
+
+  order      Int     @default(0)
+
+  createdAt  DateTime @default(now())
+
+  @@index([problemId])
+}
+
+model Session {
+  id              String   @id @default(cuid())
+  problemId       String
+  problem         Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  language        Language @default(PYTHON)
+
+  startedAt       DateTime @default(now())
+  endedAt         DateTime?
+
+  // Session metadata
+  totalSubmissions Int     @default(0)
+  bestScore        Float   @default(0) // Percentage of tests passed
+
+  submissions     Submission[]
+  aiInteractions  AIInteraction[]
+  events          SessionEvent[]
+
+  @@index([problemId])
+  @@index([startedAt])
+}
+
+model Submission {
+  id              String           @id @default(cuid())
+  sessionId       String
+  session         Session          @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  code            String
+  language        Language
+
+  status          SubmissionStatus @default(PENDING)
+
+  // Test results
+  totalTests      Int              @default(0)
+  passedTests     Int              @default(0)
+  score           Float            @default(0) // Percentage
+
+  // Judge0 response details
+  results         Json             // Array of test results with stdout, stderr, status
+
+  executionTime   Int?             // In milliseconds
+  memoryUsed      Int?             // In KB
+
+  createdAt       DateTime         @default(now())
+
+  @@index([sessionId])
+  @@index([createdAt])
+}
+
+model AIInteraction {
+  id         String   @id @default(cuid())
+  sessionId  String
+  session    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  role       String   // "user" or "assistant"
+  message    String
+
+  // AI model used
+  model      String   // "gpt-4", "claude-3-5-sonnet", etc.
+
+  // Code context at the time of query
+  codeSnapshot String?
+
+  // Token usage tracking
+  tokensUsed   Int?
+
+  createdAt    DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([createdAt])
+}
+
+model SessionEvent {
+  id         String    @id @default(cuid())
+  sessionId  String
+  session    Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  eventType  EventType
+
+  // Event data (flexible JSON for different event types)
+  data       Json
+
+  timestamp  DateTime  @default(now())
+
+  @@index([sessionId])
+  @@index([timestamp])
+}
