@@ -4,12 +4,26 @@ An AI-powered coding interview practice platform with real-time code execution a
 
 ## Features
 
+### Core Functionality
 - **Code Editor**: Monaco Editor with support for Python, JavaScript, Java, C++, and Go
 - **Code Execution**: Real-time code execution via Judge0 API
-- **AI Assistance**: Integrated OpenAI GPT-4 and Claude 3.5 for coding help
 - **Session Recording**: Track all code changes, submissions, and AI interactions
 - **Session Playback**: Review your problem-solving journey
-- **25-30 Problems**: Curated coding problems across Easy, Medium, and Hard difficulties
+- **Problem Library**: Curated coding problems across multiple categories and difficulties
+
+### AI-Powered Features
+- **AI Chat Assistant**: Get help from Claude Sonnet 4 while solving problems
+- **Code Review**: Receive detailed feedback on code quality, bugs, and optimizations
+- **Progressive Hints**: 4-level hint system that guides without spoiling solutions
+- **Complexity Analysis**: Detailed time and space complexity explanations
+- **Alternative Solutions**: Learn different approaches to solve the same problem
+
+### Analytics Dashboard
+- **Performance Tracking**: Monitor your progress over time
+- **Difficulty Analysis**: Performance breakdown across Easy, Medium, and Hard
+- **Category Insights**: Identify strengths and weak areas by problem category
+- **AI Usage Statistics**: Track your AI assistant usage patterns
+- **Weak Areas Identification**: Get personalized recommendations for improvement
 
 ## Tech Stack
 
@@ -90,6 +104,24 @@ ai-interview-platform/
 ├── prisma/               # Database schema and migrations
 └── types/                # TypeScript type definitions
 \`\`\`
+
+## API Endpoints
+
+### Core APIs
+- `GET /api/problems` - List all problems
+- `GET /api/problems/[id]` - Get problem details
+- `POST /api/sessions` - Create practice session
+- `POST /api/submit` - Submit code for execution
+
+### AI Feature APIs
+- `POST /api/ai/chat` - Chat with AI assistant (streaming)
+- `POST /api/ai/review` - Get detailed code review
+- `POST /api/ai/hint` - Request progressive hints (levels 1-4)
+- `POST /api/ai/complexity` - Analyze time/space complexity
+- `POST /api/ai/alternatives` - Get alternative solution approaches
+
+### Analytics
+- `GET /api/analytics` - Get comprehensive performance analytics
 
 ## Database Commands
 

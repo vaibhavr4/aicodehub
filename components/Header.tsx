@@ -12,6 +12,9 @@ export function Header() {
           <Link href="/problems">
             <Button variant="ghost">Problems</Button>
           </Link>
+          <Link href="/analytics">
+            <Button variant="ghost">Analytics</Button>
+          </Link>
         </nav>
       </div>
     </header>

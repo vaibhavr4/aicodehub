@@ -7,7 +7,7 @@ async function main() {
 
   // Clear existing data
   await prisma.sessionEvent.deleteMany();
-  await prisma.aiInteraction.deleteMany();
+  await prisma.aIInteraction.deleteMany();
   await prisma.submission.deleteMany();
   await prisma.session.deleteMany();
   await prisma.testCase.deleteMany();

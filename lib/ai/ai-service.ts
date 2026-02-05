@@ -20,7 +20,7 @@ export class AIService {
       const filteredMessages = messages.filter((m) => m.role !== "system");
       yield* claudeClient.streamChat(
         filteredMessages,
-        "claude-3-5-sonnet-20241022"
+        "claude-sonnet-4-20250514"
       );
     }
   }
@@ -32,7 +32,7 @@ export class AIService {
       const filteredMessages = messages.filter((m) => m.role !== "system");
       return claudeClient.chat(
         filteredMessages,
-        "claude-3-5-sonnet-20241022"
+        "claude-sonnet-4-20250514"
       );
     }
     throw new Error(`Unsupported model: ${model}`);

@@ -11,7 +11,7 @@ export class ClaudeClient {
 
   async *streamChat(
     messages: Array<{ role: string; content: string }>,
-    model: string = "claude-3-5-sonnet-20241022"
+    model: string = "claude-sonnet-4-20250514"
   ): AsyncGenerator<string> {
     const stream = await this.client.messages.stream({
       model,
@@ -34,7 +34,7 @@ export class ClaudeClient {
 
   async chat(
     messages: Array<{ role: string; content: string }>,
-    model: string = "claude-3-5-sonnet-20241022"
+    model: string = "claude-sonnet-4-20250514"
   ): Promise<string> {
     const response = await this.client.messages.create({
       model,
