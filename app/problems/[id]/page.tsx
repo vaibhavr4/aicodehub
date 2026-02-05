@@ -9,6 +9,8 @@ import { ProblemDescription } from "@/components/problem/ProblemDescription";
 import { OutputPanel } from "@/components/execution/OutputPanel";
 import { SessionRecorder } from "@/components/session/SessionRecorder";
 import { ChatInterface } from "@/components/ai/ChatInterface";
+import { AgentHQ } from "@/components/AgentHQ";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProblemDetail } from "@/types";
 
 export default function ProblemPage() {
@@ -111,13 +113,28 @@ export default function ProblemPage() {
         </div>
       </div>
 
-      {/* Right Side: AI Chat */}
-      <div className="w-1/3 overflow-hidden p-4">
-        <ChatInterface
-          sessionId={sessionId}
-          code={code}
-          problemTitle={problem.title}
-        />
+      {/* Right Side: AI Assistance */}
+      <div className="w-1/3 overflow-hidden flex flex-col">
+        <Tabs defaultValue="agents" className="flex-1 flex flex-col p-4">
+          <TabsList className="grid w-full grid-cols-2 mb-4">
+            <TabsTrigger value="agents">Agent HQ</TabsTrigger>
+            <TabsTrigger value="chat">AI Chat</TabsTrigger>
+          </TabsList>
+          <TabsContent value="agents" className="flex-1 overflow-auto">
+            <AgentHQ
+              sessionId={sessionId || ""}
+              code={code}
+              problemTitle={problem.title}
+            />
+          </TabsContent>
+          <TabsContent value="chat" className="flex-1 overflow-auto">
+            <ChatInterface
+              sessionId={sessionId}
+              code={code}
+              problemTitle={problem.title}
+            />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
